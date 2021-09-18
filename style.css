@@ -1,0 +1,22 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0px;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+}
+
+#canvasId {
+    height: 80vmin;
+    width: 80vmin;
+    border: solid 2px lightgray;
+}
+
+div {
+    margin: 10px;
+}
