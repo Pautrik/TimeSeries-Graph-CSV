@@ -24,6 +24,7 @@ const parseCSV = text => {
         const [ x, y ] = row;
         return { x, y };
     });
+    document.querySelectorAll('p, button').forEach(node => node.style.visibility = 'visible');
     draw();
 }
 

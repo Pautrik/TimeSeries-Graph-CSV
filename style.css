@@ -37,9 +37,11 @@ div {
 
 button {
     margin-top: 10px;
+    visibility: hidden;
 }
 
 p {
     word-wrap: normal;
     max-width: 250px;
+    visibility: hidden;
 }
