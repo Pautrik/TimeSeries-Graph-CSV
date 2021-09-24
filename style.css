@@ -38,3 +38,8 @@ div {
 button {
     margin-top: 10px;
 }
+
+p {
+    word-wrap: normal;
+    max-width: 250px;
+}
