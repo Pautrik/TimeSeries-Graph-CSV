@@ -1,36 +1,32 @@
-const canvas = document.querySelector('#canvasId');
-const ctx = canvas.getContext('2d');
 const fileInput = document.querySelector("#input-file");
 const zoomInput = document.querySelector('#zoom-input');
-const offsetInput = document.querySelector('#offset-input');
 
 let csvTitles = null;
-let maxTimestamp, minValue, maxValue, grid;
-let zoom = 1, offset = 0;
+let maxTimestamp, minValue, maxValue, grid, drawSVG, polyline;
+let zoom = 1, hasDrawBeenSetup = false;
 
 const draw = () => {
-    const { width, height } = canvas.getBoundingClientRect();
-    ctx.clearRect(0, 0, width-4, height-4);
+    const drawing = document.querySelector('#drawing');
+    const height = drawing.clientHeight;
+    const width = drawing.clientWidth;
 
-    ctx.strokeStyle = 'red';
-
-    const translatedGrid = grid.map(([x,y]) =>([
-        zoom * (x-offset) / maxTimestamp * Math.floor(width-4),
-        (maxValue-y) / maxValue * Math.floor(height-4),
-    ]));
-    console.log(translatedGrid);
-
-    ctx.beginPath();
-    ctx.moveTo(translatedGrid[0][0], translatedGrid[0][1]);
-    for(let i = 1; i < grid.length; i++) {
-        const [ x, y ] = translatedGrid[i];
-        ctx.lineTo(x, y);
+    if(!hasDrawBeenSetup) {
+        drawSVG = SVG().addTo(drawing);
+        hasDrawBeenSetup = true;
     }
-    ctx.closePath();
-    ctx.stroke();
+    drawSVG.size(zoom * width, height);
     
-    console.log("Drawn");
-    console.log({ width, height, maxTimestamp, minValue, maxValue });
+    const translatedGrid = grid.map(([x,y]) =>([
+        zoom * x / maxTimestamp * Math.floor(width),
+        (maxValue-y) / maxValue * Math.floor(height),
+    ]));
+
+    if(polyline === undefined) {
+        polyline = drawSVG.polyline('').fill('red').stroke({ width: 100 });
+    }
+    polyline.clear();
+    polyline.plot(translatedGrid);
+    console.log(translatedGrid);
 }
 
 const isLetter = char => char.length === 1 && char.match(/[a-z]/i);
@@ -75,9 +71,5 @@ const getFile = async event => {
 fileInput.addEventListener('change', getFile)
 zoomInput.addEventListener('change', event => {
     zoom = event.target.valueAsNumber;
-    draw();
-});
-offsetInput.addEventListener('change', event => {
-    offset = event.target.valueAsNumber;
     draw();
 });

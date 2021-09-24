@@ -9,12 +9,22 @@ html, body {
 
 body {
     display: flex;
+    flex-wrap: wrap;
 }
 
-#canvasId {
+#drawing {
     height: 80vmin;
     width: 80vmin;
     border: solid 2px lightgray;
+    flex: 0 0 auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.tools {
+    display: flex;
+    flex-flow: column wrap;
+    flex: 0 1 auto;
 }
 
 div {
